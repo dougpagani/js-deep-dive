@@ -35,6 +35,22 @@ class SemiColon(Token):
     def __repr__(self):
         return 'SemiColon()'
 
+class Comma(Token):
+    def __repr__(self):
+        return 'Comma()'
+
+class CurlyLeft(Token):
+    def __repr__(self):
+        return 'CurlyLeft()'
+
+class CurlyRight(Token):
+    def __repr__(self):
+        return 'CurlyRight()'
+
+class Colon(Token):
+    def __repr__(self):
+        return 'Colon()'
+
 class TokenizerError(Exception):
     pass
 
@@ -55,6 +71,22 @@ def tokenize(buf):
         if peek == b';':
             buf.read1(1) # consume the semicolon
             yield SemiColon()
+            continue
+        if peek == b',':
+            buf.read1(1) # consume the semicolon
+            yield Comma()
+            continue
+        if peek == b'{':
+            buf.read1(1) # consume the semicolon
+            yield CurlyLeft()
+            continue
+        if peek == b'}':
+            buf.read1(1) # consume the semicolon
+            yield CurlyRight()
+            continue
+        if peek == b':':
+            buf.read1(1) # consume the semicolon
+            yield Colon()
             continue
         if peek == b'=':
             buf.read1(1)
