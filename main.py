@@ -6,10 +6,22 @@ import sys
 class Token(object):
     pass
 
+class Symbol(Token):
+    def __init__(self, s):
+        if not isinstance(s, str):
+            raise ValueError('Symbol must be initialised with a string')
+        self.s = s
+    def __repr__(self):
+        return 'Symbol(%r)' % (self.s,)
+
 # foo(+3)
 class Plus(Token):
     def __repr__(self):
         return 'Plus()'
+
+class EqualsSign(Token):
+    def __repr__(self):
+        return 'EqualsSign()'
 
 class Number(Token):
     def __repr__(self):
@@ -32,6 +44,9 @@ def isNumberChar(b):
 def peek1(buf):
     return buf.peek(1)[:1]
 
+def isCharChar(c):
+    return c in b'abcdefghijklmnopqrstuvwxyz'
+
 def tokenize(buf):
     while True:
         peek = peek1(buf) # see what's up next
@@ -40,6 +55,10 @@ def tokenize(buf):
         if peek == b';':
             buf.read1(1) # consume the semicolon
             yield SemiColon()
+            continue
+        if peek == b'=':
+            buf.read1(1)
+            yield EqualsSign()
             continue
         if peek == b'+':
             buf.read1(1) # consume the +
@@ -54,15 +73,19 @@ def tokenize(buf):
             n = map(lambda x: x[1] * 10**x[0], enumerate(reversed(nl)))
             yield Number(sum(n))
             continue
-        if peek == b' ':
+        if peek in (b' ', b'\n'):
             buf.read1(1)
             continue
-            # just consume and move on
-        if peek == b'\n':
-            buf.read1(1)
+        if isCharChar(peek):
+            l = []
+            while isCharChar(peek):
+                l.append(buf.read1(1))
+                peek = peek1(buf)
+            yield Symbol(''.join(map(lambda b: b.decode('utf-8'), l)))
             continue
-            # just consume and move on
+
         raise TokenizerError("Unexpected character: %s" % (peek,))
+
 
 def main(argv):
     f = open(argv[1], 'rb') if len(argv) > 1 else sys.stdin
