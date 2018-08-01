@@ -54,18 +54,18 @@ class Colon(Token):
 class TokenizerError(Exception):
     pass
 
-def isNumberChar(b):
+def _isNumberChar(b):
     return b in b'0123456789'
 
-def peek1(buf):
+def _peek1(buf):
     return buf.peek(1)[:1]
 
-def isCharChar(c):
+def _isCharChar(c):
     return c in b'abcdefghijklmnopqrstuvwxyz'
 
 def tokenize(buf):
     while True:
-        peek = peek1(buf) # see what's up next
+        peek = _peek1(buf) # see what's up next
         if peek == b'':
             break
         if peek == b';':
@@ -96,11 +96,11 @@ def tokenize(buf):
             buf.read1(1) # consume the +
             yield Plus()
             continue
-        if isNumberChar(peek):
+        if _isNumberChar(peek):
             l = []
-            while isNumberChar(peek):
+            while _isNumberChar(peek):
                 l.append(buf.read1(1))
-                peek = peek1(buf)
+                peek = _peek1(buf)
             nl = tuple(map(int, l))
             n = map(lambda x: x[1] * 10**x[0], enumerate(reversed(nl)))
             yield Number(sum(n))
@@ -108,11 +108,11 @@ def tokenize(buf):
         if peek in (b' ', b'\n'):
             buf.read1(1)
             continue
-        if isCharChar(peek):
+        if _isCharChar(peek):
             l = []
-            while isCharChar(peek):
+            while _isCharChar(peek):
                 l.append(buf.read1(1))
-                peek = peek1(buf)
+                peek = _peek1(buf)
             yield Symbol(''.join(map(lambda b: b.decode('utf-8'), l)))
             continue
 
