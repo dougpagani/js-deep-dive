@@ -1,0 +1,15 @@
+[
+  Symbol('var'),
+  Symbol('foo'),
+  EqualsSign(),
+  Number(123),
+  SemiColon(),
+  Symbol('var'),
+  Symbol('z'),
+  EqualsSign(),
+  Number(321),
+  SemiColon(),
+  Symbol('z'),
+  Plus(),
+  Symbol('foo'),
+]

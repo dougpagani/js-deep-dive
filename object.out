@@ -1,0 +1,10 @@
+[
+  Symbol('var'),
+  Symbol('foo'),
+  EqualsSign(),
+  CurlyLeft(),
+  Symbol('x'),
+  Colon(),
+  Number(123),
+  Comma(),
+  ...

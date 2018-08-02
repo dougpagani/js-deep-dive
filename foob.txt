@@ -1,0 +1,8 @@
+('StatementList',
+ [('PlusBinary',
+   [('NumberLiteral(Number(1))', []),
+    ('NumberLiteral(Number(23281129398))', [])]),
+  ('NopStatement', []),
+  ('PlusBinary',
+   [('NumberLiteral(Number(2))', []), ('NumberLiteral(Number(90))', [])]),
+  ('NopStatement', [])])
